@@ -34,6 +34,15 @@ app.get('/products', (req, res) => {
   ]);
 });
 
+app.get('/products/:id', (req, res) => {
+  const {id} = req.params;
+  res.json({
+    id: id,
+    name: 'product 2',
+    price: 600,
+  });
+});
+
 app.get('/categories', (req, res) => {
   res.json([
     {
@@ -49,6 +58,14 @@ app.get('/categories', (req, res) => {
       name: 'Cat 3',
     },
   ]);
+});
+
+app.get('/categories/:categoryId/products/:productId', (req, res) => {
+  const {categoryId, productId} = req.params;
+  res.json({
+    categoryId: categoryId,
+    productId: productId,
+  })
 });
 
 app.listen(port, () => {
