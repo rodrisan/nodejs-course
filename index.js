@@ -4,6 +4,8 @@ const routerApi = require('./routes');
 const app = express();
 const port = 3020;
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('Hello world');
 });
