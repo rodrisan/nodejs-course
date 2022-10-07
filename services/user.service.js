@@ -7,7 +7,7 @@ class UserService {
     this.generate();
   }
 
-  generate() {
+  async generate() {
     const limit = 100;
     for (let index = 0; index < limit; index++) {
       this.users.push({
@@ -19,7 +19,7 @@ class UserService {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newUser = {
       id: faker.datatype.uuid(),
       ...data,
@@ -29,19 +29,19 @@ class UserService {
     return newUser;
   }
 
-  find() {
+  async find() {
     return this.users;
   }
 
-  findOne(id) {
+  async findOne(id) {
     return this.users.find(item => item.id === id);
   }
 
-  findByName(name) {
+  async findByName(name) {
     return this.users.find(item => item.name === name);
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = this.users.findIndex(item => item.id === id);
     if (index === -1){
       throw new Error('user not found');
@@ -55,7 +55,7 @@ class UserService {
     return this.products[index];
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.users.findIndex(item => item.id === id);
     if (index === -1){
       throw new Error('user not found');
