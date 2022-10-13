@@ -1,10 +1,13 @@
 const faker = require('faker');
-const getConnection = require('../libs/postgres');
+
+const pool = require('../libs/postgres.pool');
 class UserService {
 
   constructor(){
     this.users = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.log(err));
   }
 
   async generate() {
@@ -30,9 +33,9 @@ class UserService {
   }
 
   async find() {
-    const client = await getConnection();
-    const rta = await client.query('SELECT * from tasks');
-    return rta.rows;
+    const query = 'select * from tasks';
+    const res = await this.pool.query(query);
+    return res.rows;
   }
 
   async findOne(id) {
