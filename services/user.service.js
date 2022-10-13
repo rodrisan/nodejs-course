@@ -1,5 +1,5 @@
 const faker = require('faker');
-
+const getConnection = require('../libs/postgres');
 class UserService {
 
   constructor(){
@@ -30,7 +30,9 @@ class UserService {
   }
 
   async find() {
-    return this.users;
+    const client = await getConnection();
+    const rta = await client.query('SELECT * from tasks');
+    return rta.rows;
   }
 
   async findOne(id) {
