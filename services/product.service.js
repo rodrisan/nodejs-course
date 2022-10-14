@@ -34,7 +34,7 @@ class ProductService {
   }
 
   async find() {
-    const query = 'SELECT * from tasks';
+    const query = 'SELECT * from users';
     const [data] = await sequelize.query(query);
     return data;
   }

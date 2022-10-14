@@ -33,7 +33,7 @@ class CategoryService {
   }
 
   async find() {
-    const query = 'select * from tasks';
+    const query = 'select * from users';
     const res = await this.pool.query(query);
     return res.rows;
   }
