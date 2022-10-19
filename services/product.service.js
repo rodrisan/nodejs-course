@@ -1,7 +1,7 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
-const sequelize = require('../libs/sequelize');
+const { models } = require('../libs/sequelize');
 
 class ProductService {
 
@@ -24,55 +24,50 @@ class ProductService {
   }
 
   async create(data) {
-    const newProduct = {
-      id: faker.datatype.uuid(),
-      ...data,
-    }
-    this.products.push(newProduct);
-
+    const newProduct = await models.Product.create(data);
     return newProduct;
   }
 
   async find() {
-    const query = 'SELECT * from users';
-    const [data] = await sequelize.query(query);
-    return data;
+    const products = await models.Product.findAll({
+      include: ['category']
+    });
+    return products;
   }
 
   async findOne(id) {
     const product = this.products.find(item => item.id === id);
-    if(typeof product === "undefined") {
+    if (!product) {
       throw boom.notFound('product not found');
     }
-    if (product.isBlocked) {
-      throw boom.conflict('product blocked');
+    if (product.isBlock) {
+      throw boom.conflict('product is block');
     }
     return product;
   }
 
   async update(id, changes) {
     const index = this.products.findIndex(item => item.id === id);
-    if (index === -1){
+    if (index === -1) {
       throw boom.notFound('product not found');
     }
     const product = this.products[index];
     this.products[index] = {
       ...product,
-      ...changes,
+      ...changes
     };
-
     return this.products[index];
   }
 
   async delete(id) {
     const index = this.products.findIndex(item => item.id === id);
-    if (index === -1){
+    if (index === -1) {
       throw boom.notFound('product not found');
     }
     this.products.splice(index, 1);
-
-    return {id};
+    return { id };
   }
+
 }
 
 module.exports = ProductService;
